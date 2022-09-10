@@ -1,16 +1,21 @@
+import { FunctionComponent, useState } from 'react'
+import { Col, Row } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 import {
   styled
 } from '@mui/material'
-import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import { FunctionComponent, useState } from 'react'
-import { Col, Row } from 'react-bootstrap'
 
-interface HomepageProps {
+interface HeaderOwnProps {
+  onActiveTabChanged: (string) => void
   defaultActiveTab: string
 }
 
-const NavBarCol = styled(Col)(({ tabIsActive }) => ({
+interface NavbarColProps {
+  tabIsActive: boolean
+}
+
+const NavBarCol = styled(Col)<NavbarColProps>(({ tabIsActive }) => ({
   marginTop: '20px',
   marginBottom: '20px',
   fontFamily: 'Inter',
@@ -22,9 +27,15 @@ const NavBarCol = styled(Col)(({ tabIsActive }) => ({
   borderRadius: '50px'
 }))
 
-const Header: FunctionComponent<HomepageProps> = ({ defaultActiveTab = 'results' }: HomepageProps) => {
+const Header: FunctionComponent<HeaderOwnProps> = ({ defaultActiveTab, onActiveTabChanged }: HeaderOwnProps) => {
   const [activeTab, setActiveTab] = useState(defaultActiveTab)
   const { walletAddress, priceTier } = useSelector((state: RootState) => state.user)
+
+  const activeTabChanged = (activeTab: string): void => {
+    onActiveTabChanged(activeTab)
+    setActiveTab(activeTab)
+  }
+
   return (
         <>
             <Row>
@@ -34,11 +45,11 @@ const Header: FunctionComponent<HomepageProps> = ({ defaultActiveTab = 'results'
                 <Col md={2}>User: {walletAddress}<br /> Price Tier: {priceTier}</Col>
                 <Col>
                     <Row>
-                        <NavBarCol tabIsActive={activeTab === 'home'} md={2} onClick={() => setActiveTab('home')}>HOMEPAGE</NavBarCol>
-                        <NavBarCol tabIsActive={activeTab === 'results'} md={3} onClick={() => setActiveTab('results')}>MATCH RESULTS</NavBarCol>
-                        <NavBarCol tabIsActive={activeTab === 'predictions'} md={3} onClick={() => setActiveTab('predictions')}>MATCH PREDICTIONS</NavBarCol>
-                        <NavBarCol tabIsActive={activeTab === 'highlights'} md={2} onClick={() => setActiveTab('highlights')}>HIGHLIGHTS</NavBarCol>
-                        <NavBarCol tabIsActive={activeTab === 'leaderboard'} md={2} onClick={() => setActiveTab('leaderboard')}>LEADERBOARD</NavBarCol>
+                        <NavBarCol tabIsActive={activeTab === 'home'} md={2} onClick={() => activeTabChanged('home')}>HOMEPAGE</NavBarCol>
+                        <NavBarCol tabIsActive={activeTab === 'results'} md={3} onClick={() => activeTabChanged('results')}>MATCH RESULTS</NavBarCol>
+                        <NavBarCol tabIsActive={activeTab === 'predictions'} md={3} onClick={() => activeTabChanged('predictions')}>MATCH PREDICTIONS</NavBarCol>
+                        <NavBarCol tabIsActive={activeTab === 'highlights'} md={2} onClick={() => activeTabChanged('highlights')}>HIGHLIGHTS</NavBarCol>
+                        <NavBarCol tabIsActive={activeTab === 'leaderboard'} md={2} onClick={() => activeTabChanged('leaderboard')}>LEADERBOARD</NavBarCol>
                     </Row>
                 </Col>
                 <Col md={2}></Col>

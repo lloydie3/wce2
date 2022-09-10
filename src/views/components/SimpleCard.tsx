@@ -1,21 +1,21 @@
-import { Card } from '@mui/material'
-import { Box, styled } from '@mui/system'
+import { Card, styled } from '@mui/material'
+import { Box } from '@mui/system'
 
 const CardRoot = styled(Card)(() => ({
   height: '100%',
   padding: '20px 24px'
 }))
 
-// const CardTitle = styled('div')(({ subtitle }: CardTitleProps) => ({
-//   fontSize: '1rem',
-//   fontWeight: '500',
-//   textTransform: 'capitalize',
-//   marginBottom: !subtitle && '16px'
-// }))
+const CardTitle = styled('div')<CardTitleProps>(({ subtitle }) => ({
+  fontSize: '1rem',
+  fontWeight: '500',
+  textTransform: 'capitalize',
+  marginBottom: !subtitle ? '16px' : undefined
+}))
 
-// interface CardTitleProps {
-//   subtitle: string
-// }
+interface CardTitleProps {
+  subtitle?: string
+}
 
 interface SimpleCardProps {
   children: React.ReactNode
@@ -26,7 +26,7 @@ interface SimpleCardProps {
 const SimpleCard: React.FunctionComponent<SimpleCardProps> = ({ children, title, subtitle }: SimpleCardProps) => {
   return (
       <CardRoot elevation={6}>
-        {/* <CardTitle subtitle={subtitle}>{title}</CardTitle> */}
+         <CardTitle subtitle={subtitle}>{title}</CardTitle>
         {subtitle && <Box sx={{ mb: 2 }}>{subtitle}</Box>}
         {children}
       </CardRoot>

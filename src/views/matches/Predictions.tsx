@@ -12,7 +12,7 @@ const Predictions: FunctionComponent = () => {
   const { matchPredictions } = useSelector((state: RootState) => state.matches)
   const dispatcher = useDispatch()
 
-  const onMatchPredictionUpdated = (dateIndex, matchIndex, homeTeam, awayTeam, homeTeamScore, awayTeamScore, matchDate): void => {
+  const onMatchPredictionUpdated = (dateIndex: number, matchIndex: number, homeTeam: string, awayTeam: string, homeTeamScore: number, awayTeamScore: number, matchDate: Date): void => {
     dispatcher(updateMatchPredictions(dateIndex, matchIndex, homeTeam, awayTeam, homeTeamScore, awayTeamScore, matchDate))
   }
 

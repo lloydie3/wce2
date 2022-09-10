@@ -10,8 +10,8 @@ import {
 } from '@mui/material'
 import { FunctionComponent, useState } from 'react'
 import { useSelector } from 'react-redux'
-import SimpleCard from './../../SimpleCard'
 import { RootState } from '../../redux/store'
+import SimpleCard from '../components/SimpleCard'
 
 const StyledTable = styled(Table)(() => ({
   whiteSpace: 'pre',

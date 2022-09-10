@@ -1,10 +1,11 @@
-import SimpleCard from './../../SimpleCard'
-import SimpleExpansionPanel, { AccordionProps } from './../../SimpleExpansionPanel'
 import { FunctionComponent, useEffect, useState } from 'react'
 import { Gameday } from '../../domain/Gameday'
 import moment from 'moment'
 import { getImgByName } from '../../img/imgFetch'
 import CarouselMain from '../../components/CarouselMain'
+import SimpleExpansionPanel, { AccordionProps } from '../components/SimpleExpansionPanel'
+import SimpleCard from '../components/SimpleCard'
+import FullGameAndGroupSelector from './FullGameAndGroupSelector'
 
 interface GamedayTemplateProps {
   header: string
@@ -14,11 +15,16 @@ interface GamedayTemplateProps {
 
 const GamedayTemplate: FunctionComponent<GamedayTemplateProps> = ({ header, matchDetails, onMatchDataChanged }: GamedayTemplateProps) => {
   const [selectedDate, setSelectedDate] = useState(undefined)
+  const [allDatesSelected, setAllDatesSelected] = useState(true)
   const [accordionContent, setAccordionContent] = useState<AccordionProps[]>()
 
   useEffect(() => {
+    console.log('click1')
+    console.log(selectedDate)
+    console.log(matchDetails)
     const thisContent = matchDetails?.filter(matchDetail => {
-      if (!selectedDate) return true
+      if (allDatesSelected) return true
+      console.log(selectedDate)
       return moment(matchDetail.day).isSame(selectedDate)
     })
       .map((gameday, dateIndex) => {
@@ -43,14 +49,14 @@ const GamedayTemplate: FunctionComponent<GamedayTemplateProps> = ({ header, matc
       })
 
     setAccordionContent(thisContent)
-  }, [matchDetails, selectedDate])
+  }, [matchDetails, selectedDate, allDatesSelected])
 
   const dates = matchDetails?.map(matchDetail => moment(matchDetail.day))
   const onSelectedDateUpdated = (date): void => {
+    setAllDatesSelected(false)
     setSelectedDate(date)
   }
 
-  console.log(accordionContent?.length)
   return (
       <>
           <CarouselMain
@@ -58,11 +64,10 @@ const GamedayTemplate: FunctionComponent<GamedayTemplateProps> = ({ header, matc
               headerFormatter={date => moment(date).format('DD MMM')}
               mainItemFormatter={(date) => moment(date).format('ddd')}
               onSelectedDate={onSelectedDateUpdated}/>
-          <div onClick={() => setSelectedDate(undefined)}>View all dates</div>
-          <div>View all groups</div>
-      <SimpleCard title={header}>
-        <SimpleExpansionPanel accordionContent={accordionContent} isAccordion={accordionContent?.length !== 1} />
-      </SimpleCard>
+          <FullGameAndGroupSelector onAllDatesSelected={(selected) => setAllDatesSelected(selected)} />
+          <SimpleCard title={header}>
+              <SimpleExpansionPanel accordionContent={accordionContent} isAccordion={accordionContent?.length !== 1} />
+          </SimpleCard>
       </>
   )
 }

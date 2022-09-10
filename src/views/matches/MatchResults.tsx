@@ -4,7 +4,7 @@ import { getMatchResults } from './../../redux/actions/matchesTaskActions'
 import GamedayTemplate from './../matches/GamedayTemplate'
 import { RootState } from './../../redux/store'
 
-const Gameday: FunctionComponent = () => {
+const MatchResults: FunctionComponent = () => {
   const { matchResults } = useSelector((state: RootState) => state.matches)
   const dispatcher = useDispatch()
 
@@ -19,4 +19,4 @@ const Gameday: FunctionComponent = () => {
   )
 }
 
-export default Gameday
+export default MatchResults
