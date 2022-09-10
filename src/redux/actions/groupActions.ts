@@ -1,0 +1,2 @@
+export const GET_GROUPS = 'GET_GROUPS'
+export const GET_GROUPS_SUCCEEDED = 'GET_GROUPS_SUCCEEDED'
